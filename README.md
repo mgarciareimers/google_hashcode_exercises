@@ -1,3 +1,4 @@
+<pre>
 # google_hashcode_exercises
 Google Hashcode exercises from previous editions for preparation.
 
@@ -9,3 +10,4 @@ Google Hashcode exercises from previous editions for preparation.
         -> out/ (Output data folder).\
         -> bin/ \
         -> src/ (Source code folder).\
+</pre>
