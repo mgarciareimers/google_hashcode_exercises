@@ -1,11 +1,16 @@
 package evenMorePizza;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import evenMorePizza.commons.Constants;
 import evenMorePizza.commons.Utils;
+import models.Data;
+import models.Pizza;
+import models.Team;
 
 /************************************************************************************************************************
  * * Hello World, * * to start, select the file you want to read from the list
@@ -21,12 +26,21 @@ public class Main {
 	private final static String OUTPUT_DATA_PATH = "/out";
 
 	private static File inputFile = null;
+	private static Data data = null;
+	
+	private static List<Team> team2People = new ArrayList<>();
+	private static List<Team> team3People = new ArrayList<>();;
+	private static List<Team> team4People = new ArrayList<>();;
 
 	public static void main(String[] args) {
 		selectInputFile();
 
 		System.out.println("\n> SelectedFile: ".concat(inputFile.getName()));
-		System.out.println("\n> Read value: " + Utils.readFile(inputFile.getPath())); // TODO - Delete.
+		
+		
+		data = Utils.readFile(inputFile.getPath());
+		
+		assignPizzas(team2People, 2, data.getTeams2());
 	}
 
 	// Method that asks the user for the file to read and selects it saving it in
@@ -65,5 +79,39 @@ public class Main {
 			selectInputFile();
 		}
 	}
-
+	
+	// Method that assigns pizzas.
+	private static void assignPizzas(List<Team> teams, int numberTeamMembers, int numberTeams) {
+		//if (data.getPizzas() == null || data.getPizzas().size() < 2) {}
+		for (int i = 0; i <= numberTeams - 1; i++) {
+			Team team = new Team(numberTeamMembers, new ArrayList<>());
+			
+			for (int j = 0; j < data.getPizzas().size() - 1; j--) {
+				for (int k = data.getPizzas().size() - 1; k > i; k--) {
+					if (!data.getPizzas().get(j).getIngredientsString().equals(data.getPizzas().get(k).getIngredientsString())) {
+						team.getPizzas().add(data.getPizzas().get(j));
+						team.getPizzas().add(data.getPizzas().get(k));
+					}
+					
+					if (team.getPizzas().size() >= numberTeamMembers) {
+						break;
+					}
+				}
+				
+				if (team.getPizzas().size() >= numberTeamMembers) {
+					break;
+				}
+			}
+			
+			if (team.getPizzas().size() >= numberTeamMembers) {
+				for (Pizza pizza : team.getPizzas()) {
+					data.getPizzas().remove(pizza);
+				}
+				
+				teams.add(team);
+			}
+		}
+		
+		System.out.println("Hi");
+	}
 }
